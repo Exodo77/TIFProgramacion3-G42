@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
   const fetchUserProfile = async (token) => {
     try {
       const response = await axios.get('https://sandbox.academiadevelopers.com/users/profiles/profile_data/', {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Token  ${token}` }
       });
       console.log('User profile:', response.data); // Verifica los datos recibidos
       setUser(prev => ({ ...prev, ...response.data })); // Guarda los datos del perfil en el estado
