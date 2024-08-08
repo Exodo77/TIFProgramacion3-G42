@@ -42,4 +42,3 @@ Propósito: Proporcionar una barra de navegación con enlaces y un botón de cie
 Características:
 Muestra enlaces a diferentes páginas basados en el estado de autenticación del usuario.
 Permite a los usuarios cerrar sesión si están autenticados. */
-

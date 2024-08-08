@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 const Profile = () => {
   const { user, logout } = useAuth();
 
+  console.log('Profile - user:', user); // Log para depuración
+
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -16,7 +18,7 @@ const Profile = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">Perfil de Usuario</h1>
-        <p className="text-gray-700"><strong>ID de usuario:</strong> {user.user__id || 'No disponible'}</p>
+        <p className="text-gray-700"><strong>ID de usuario:</strong> {user.user_id || 'No disponible'}</p>
         <p className="text-gray-700"><strong>Nombre de usuario:</strong> {user.username || 'No disponible'}</p>
         <p className="text-gray-700"><strong>Nombre:</strong> {user.first_name || 'No disponible'}</p>
         <p className="text-gray-700"><strong>Apellido:</strong> {user.last_name || 'No disponible'}</p>
