@@ -1,9 +1,9 @@
 // src/pages/AddSong.jsx
-import React from 'react';
-import AddSongForm from '../components/Music/AddSongForm';
+import React, { useState } from 'react';
+import { useApi } from '../context/ApiContext';
+import { useNavigate } from 'react-router-dom';
 
 const AddSong = () => {
-<<<<<<< HEAD
   const [title, setTitle] = useState('');
   const [error, setError] = useState(null); // Estado para manejar errores
   const { fetchData, loading } = useApi();
@@ -47,12 +47,6 @@ const AddSong = () => {
         {loading ? 'Agregando...' : 'Agregar Canción'}
       </button>
     </form>
-=======
-  return (
-    <div>
-      <AddSongForm />
-    </div>
->>>>>>> main
   );
 };
 

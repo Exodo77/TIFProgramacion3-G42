@@ -21,13 +21,9 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
             <Route path="/songs" element={<PrivateRoute element={<SongsList />} />} />
-<<<<<<< HEAD
             <Route path="/songs/add" element={<PrivateRoute element={<AddSong />} />} />
-=======
-            <Route path="/songs/new" element={<PrivateRoute element={<AddSong />} />} /> 
->>>>>>> main
             <Route path="/songs/edit/:id" element={<PrivateRoute element={<EditSong />} />} />
-            <Route path="/songs/delete" element={<PrivateRoute element={<DeleteSong />} />} />
+            <Route path="/songs/delete/:id" element={<PrivateRoute element={<DeleteSong />} />} />
           </Routes>
         </ApiProvider>
       </AuthProvider>
@@ -36,4 +32,3 @@ const App = () => {
 };
 
 export default App;
-

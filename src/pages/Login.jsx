@@ -56,10 +56,10 @@ const Login = () => {
 
 export default Login;
 
-
 /*Resumen del Archivo Login.jsx
 Propósito: Proporcionar una interfaz para que los usuarios inicien sesión.
 Características:
 Campos para nombre de usuario y contraseña.
 Maneja el envío del formulario y llama a la función de autenticación.
 Diseño centrado y estilizado con Tailwind CSS. */
+
