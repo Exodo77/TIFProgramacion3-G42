@@ -8,18 +8,25 @@ const AddSongForm = () => {
   const [year, setYear] = useState('');
   const [album, setAlbum] = useState('');
   const [artist, setArtist] = useState('');
+  const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState('');
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Data to be sent in the request
-    const songData = {
-      title,
-      year: year || null,  // Optional field
-      album: album || null, // Optional field
-    };
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('year', year || '');
+    formData.append('album', album || '');
+    formData.append('artist', artist);
+    if (file) {
+      formData.append('song_file', file);
+    }
 
     const token = localStorage.getItem('authToken');
 
@@ -29,26 +36,26 @@ const AddSongForm = () => {
     }
 
     try {
-      const response = await axios.post('https://sandbox.academiadevelopers.com/harmonyhub/songs/', songData, {
+      const response = await axios.post('https://sandbox.academiadevelopers.com/harmonyhub/songs/', formData, {
         headers: {
           Authorization: `Token ${token}`,
+          'Content-Type': 'multipart/form-data', // Importante para enviar archivos
         },
       });
-      console.log('Song added successfully:', response.data);
+      console.log('Canción añadida con éxito:', response.data);
       setTitle('');
       setYear('');
       setAlbum('');
       setArtist('');
+      setFile(null);
       setSuccess('Canción añadida con éxito.');
-      setError(null); // Limpiar el error si la solicitud es exitosa
+      setError(null);
     } catch (error) {
-      console.error('Failed to add song:', error.response ? error.response.data : error.message);
+      console.error('Error al añadir la canción:', error.response ? error.response.data : error.message);
       setError(error.response ? error.response.data.detail : 'Error al añadir la canción.');
       if (error.response && error.response.status === 401) {
-        // Si el error es un 401, forzar al usuario a reiniciar sesión
         setError('Token inválido. Por favor, vuelve a iniciar sesión.');
-        localStorage.removeItem('authToken'); // Limpiar el token inválido
-        // Aquí puedes redirigir al usuario al login si es necesario
+        localStorage.removeItem('authToken');
       }
     }
   };
@@ -95,6 +102,14 @@ const AddSongForm = () => {
             value={artist}
             onChange={(e) => setArtist(e.target.value)}
             required
+          />
+        </div>
+        <div>
+          <label>Archivo de la canción:</label>
+          <input
+            type="file"
+            onChange={handleFileChange}
+            accept="audio/*" // Limita la selección a archivos de audio
           />
         </div>
         <button type="submit">Añadir canción</button>
