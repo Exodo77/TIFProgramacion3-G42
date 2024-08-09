@@ -1,41 +1,53 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
+import logoG42 from '../assets/logog42.png';
 
 const Profile = () => {
   const { user, logout } = useAuth();
 
-  console.log('Profile - user:', user); // Log para depuración
-
   if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div style={{ backgroundColor: '#b3e5fc', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <p className="text-gray-700">No has iniciado sesión.</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Perfil de Usuario</h1>
-        <p className="text-gray-700"><strong>ID de usuario:</strong> {user.user_id || 'No disponible'}</p>
-        <p className="text-gray-700"><strong>Nombre de usuario:</strong> {user.username || 'No disponible'}</p>
-        <p className="text-gray-700"><strong>Nombre:</strong> {user.first_name || 'No disponible'}</p>
-        <p className="text-gray-700"><strong>Apellido:</strong> {user.last_name || 'No disponible'}</p>
-        <p className="text-gray-700"><strong>Email:</strong> {user.email || 'No disponible'}</p>
-        {user.dob && <p className="text-gray-700"><strong>Fecha de nacimiento:</strong> {user.dob}</p>}
-        {user.bio && <p className="text-gray-700"><strong>Biografía:</strong> {user.bio}</p>}
-        {user.image && <img className="mt-4 rounded-full" src={user.image} alt="Profile" />}
-        <p className="text-gray-700"><strong>Estado:</strong> {user.state || 'No disponible'}</p>
-        <p className="text-gray-700"><strong>Fecha de alta:</strong> {user.created_at || 'No disponible'}</p>
-        <p className="text-gray-700"><strong>Fecha de modificación:</strong> {user.updated_at || 'No disponible'}</p>
-        
-        <button
-          onClick={logout}
-          className="mt-4 w-full bg-red-500 text-white py-2 px-4 rounded-lg shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-        >
-          Cerrar sesión
-        </button>
+    <div style={{ backgroundColor: '#b3e5fc', minHeight: '100vh', padding: '20px' }}>
+      {/* Encabezado con Logo y Botones */}
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <img src={logoG42} alt="G42 Logo" style={{ width: '150px' }} />
+        <div>
+          <Link to="/home">
+            <Button variant="secondary" className="me-2">Home</Button>
+          </Link>
+          <Button variant="danger" onClick={logout}>Logout</Button>
+        </div>
+      </div>
+
+      {/* Contenido del Perfil */}
+      <div className="d-flex flex-column align-items-center">
+        <div className="bg-white p-4 rounded shadow" style={{ maxWidth: '500px', width: '100%' }}>
+          <h2 className="text-center mb-4">Perfil de Usuario</h2>
+          <p><strong>ID de usuario:</strong> {user.user_id || 'No disponible'}</p>
+          <p><strong>Nombre de usuario:</strong> {user.username || 'No disponible'}</p>
+          <p><strong>Nombre:</strong> {user.first_name || 'No disponible'}</p>
+          <p><strong>Apellido:</strong> {user.last_name || 'No disponible'}</p>
+          <p><strong>Email:</strong> {user.email || 'No disponible'}</p>
+          {user.dob && <p><strong>Fecha de nacimiento:</strong> {user.dob}</p>}
+          {user.bio && <p><strong>Biografía:</strong> {user.bio}</p>}
+          {user.image && (
+            <div className="text-center my-3">
+              <img className="rounded-circle" src={user.image} alt="Profile" style={{ width: '100px', height: '100px' }} />
+            </div>
+          )}
+          <p><strong>Estado:</strong> {user.state || 'No disponible'}</p>
+          <p><strong>Fecha de alta:</strong> {user.created_at || 'No disponible'}</p>
+          <p><strong>Fecha de modificación:</strong> {user.updated_at || 'No disponible'}</p>
+        </div>
       </div>
     </div>
   );

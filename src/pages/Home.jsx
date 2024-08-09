@@ -1,28 +1,35 @@
-/*Importaciones:
-React para usar JSX y componentes de React.
-SongList es importado desde el componente SongList, que muestra la lista de canciones. */
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { useAuth } from '../context/AuthContext';
 import SongList from '../components/Music/SongList';
+import logoG42 from '../assets/logog42.png';
 
-
-/*Componente Home:
-Estructura: Un contenedor con margen automático (mx-auto) y padding (p-4).
-Encabezado (h1): Título centrado con un tamaño de texto grande (text-2xl), negrita (font-bold), margen inferior (mb-6), y color de texto amarillo (text-yellow-700).
-SongList: Se incluye el componente SongList, que mostrará la lista de canciones. */
 const Home = () => {
+  const { logout, user } = useAuth();
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-6 text-yellow-700">Home</h1>
-      <SongList />
+    <div style={{ backgroundColor: '#b3e5fc', minHeight: '100vh', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '0', padding: '0' }}>
+      <img src={logoG42} alt="G42 Logo" className="my-4" style={{ width: '300px' }} />
+      <div className="d-flex justify-content-end align-items-center mb-4" style={{ width: '100%', paddingRight: '20px' }}>
+        <div>
+          <Link to="/profile">
+            <Button variant="secondary" className="me-2">Profile</Button>
+          </Link>
+          {user ? (
+            <Button variant="danger" onClick={logout}>Logout</Button>
+          ) : (
+            <Link to="/login">
+              <Button variant="primary">Login</Button>
+            </Link>
+          )}
+        </div>
+      </div>
+      <div style={{ width: '100%', flex: '1' }}>
+        <SongList />
+      </div>
     </div>
   );
 };
 
 export default Home;
-
-/*RESUMEN DEL FUNCIONAMIENTO DEL ARCHIVO
-Propósito: Mostrar la página de inicio que incluye un encabezado y la lista de canciones.
-Características:
-Contenedor con diseño centrado y padding.
-Título de página con estilo.
-Inclusión del componente SongList para mostrar las canciones. */
