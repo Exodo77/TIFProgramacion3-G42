@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post('https://sandbox.academiadevelopers.com/api-auth/', {
         username,
-        password
+        password,
       });
       const token = response.data.token;
       localStorage.setItem('authToken', token); // Guarda el token en localStorage
@@ -27,9 +27,9 @@ export const AuthProvider = ({ children }) => {
   const fetchUserProfile = async (token) => {
     try {
       const response = await axios.get('https://sandbox.academiadevelopers.com/users/profiles/profile_data/', {
-        headers: { Authorization: `Token ${token}` }
+        headers: { Authorization: `Token ${token}` },
       });
-      setUser(prev => ({ ...prev, ...response.data })); // Guarda los datos del perfil en el estado
+      setUser((prev) => ({ ...prev, ...response.data })); // Guarda los datos del perfil en el estado
     } catch (error) {
       console.error('Failed to fetch user profile:', error);
     }
