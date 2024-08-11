@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useAuth } from '../../context/AuthContext'; // Ruta ajustada
+import { useAuth } from '../../context/AuthContext';
 
 const AddSongForm = () => {
   const { user } = useAuth();
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
   const [album, setAlbum] = useState('');
-  const [artist, setArtist] = useState('');
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState('');
@@ -18,38 +17,41 @@ const AddSongForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError(null); // Limpiar errores anteriores
+    setSuccess(''); // Limpiar mensajes de éxito anteriores
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('year', year || '');
-    formData.append('album', album || '');
-    formData.append('artist', artist);
-    if (file) {
-      formData.append('song_file', file);
-    }
-
-    const token = localStorage.getItem('authToken');
-
-    if (!token) {
-      setError('Token no encontrado. Por favor, inicia sesión.');
+    if (!title) {
+      setError('Se requiere un título.');
       return;
     }
 
     try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('year', year || '');
+      formData.append('album', album || '');
+      if (file) {
+        formData.append('song_file', file);
+      }
+
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setError('Token no encontrado. Por favor, inicia sesión.');
+        return;
+      }
+
       const response = await axios.post('https://sandbox.academiadevelopers.com/harmonyhub/songs/', formData, {
         headers: {
           Authorization: `Token ${token}`,
-          'Content-Type': 'multipart/form-data', // Importante para enviar archivos
+          'Content-Type': 'multipart/form-data',
         },
       });
       console.log('Canción añadida con éxito:', response.data);
       setTitle('');
       setYear('');
       setAlbum('');
-      setArtist('');
       setFile(null);
       setSuccess('Canción añadida con éxito.');
-      setError(null);
     } catch (error) {
       console.error('Error al añadir la canción:', error.response ? error.response.data : error.message);
       setError(error.response ? error.response.data.detail : 'Error al añadir la canción.');
@@ -96,20 +98,11 @@ const AddSongForm = () => {
           />
         </div>
         <div>
-          <label>Artista:</label>
-          <input
-            type="text"
-            value={artist}
-            onChange={(e) => setArtist(e.target.value)}
-            required
-          />
-        </div>
-        <div>
           <label>Archivo de la canción:</label>
           <input
             type="file"
             onChange={handleFileChange}
-            accept="audio/*" // Limita la selección a archivos de audio
+            accept="audio/*"
           />
         </div>
         <button type="submit">Añadir canción</button>
