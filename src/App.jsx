@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ApiProvider } from './context/ApiContext';
 import Home from './pages/Home';
 import SongsList from './pages/SongsList';
+import SongList from './components/Music/SongList';
 import AddSong from './pages/AddSong';
 import EditSong from './pages/EditSong';
 import DeleteSong from './pages/DeleteSong';
@@ -20,7 +21,6 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
-            <Route path="/songs" element={<PrivateRoute element={<SongsList />} />} />
             <Route path="/songs/new" element={<PrivateRoute element={<AddSong />} />} /> 
             <Route path="/songs/edit/:id" element={<PrivateRoute element={<EditSong />} />} />
             <Route path="/songs/delete" element={<PrivateRoute element={<DeleteSong />} />} />

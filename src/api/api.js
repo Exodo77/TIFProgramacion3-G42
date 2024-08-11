@@ -9,7 +9,10 @@ const api = axios.create({
 
 // Puedes añadir lógica de interceptores si es necesario, pero no usar hooks directamente aquí.
 api.interceptors.request.use((config) => {
-  // Aquí puedes añadir headers o modificar la configuración de la solicitud si es necesario
+  const token = localStorage.getItem('authToken'); // Obtener el token del almacenamiento local
+  if (token) {
+    config.headers.Authorization = `Token ${token}`; // Agregar el token a los encabezados
+  }
   return config;
 }, (error) => {
   return Promise.reject(error);
