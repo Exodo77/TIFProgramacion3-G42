@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useApi } from '../context/ApiContext';
+import { Button, Form, Container, Card, Alert } from 'react-bootstrap';
+import logoG42 from '../assets/logog42.png';
 
 const DeleteSong = () => {
   const { user } = useAuth();
@@ -9,6 +11,7 @@ const DeleteSong = () => {
   const navigate = useNavigate();
   const [songId, setSongId] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(''); // Nuevo estado para mensajes de éxito
 
   const handleDelete = async () => {
     if (!user) {
@@ -21,35 +24,54 @@ const DeleteSong = () => {
       return;
     }
 
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta canción?');
+
+    if (!confirmDelete) {
+      return; // No hacer nada si el usuario cancela
+    }
+
     try {
       await deleteSong(songId, user.token);
-      navigate('/'); // Redirige a la lista de canciones o a donde prefieras
+      setSuccess('Archivo eliminado con éxito.'); 
+      setError(''); 
+      setSongId('');
+      setTimeout(() => navigate('/'), 2000); // Redirige después de 2 segundos
     } catch (error) {
       console.error('Failed to delete song:', error);
       setError('No se pudo eliminar la canción. Intenta de nuevo más tarde.');
+      setSuccess(''); // Limpia cualquier mensaje de éxito previo
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Eliminar Canción</h1>
-        <input
-          type="text"
-          placeholder="Ingresa el ID de la canción"
-          value={songId}
-          onChange={(e) => setSongId(e.target.value)}
-          className="w-full border border-gray-300 p-2 rounded mb-4"
-        />
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <button
-          onClick={handleDelete}
-          className="w-full bg-red-500 text-white py-2 px-4 rounded-lg shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-        >
-          Eliminar
-        </button>
-      </div>
-    </div>
+    <Container fluid className="d-flex align-items-center justify-content-center py-5" style={{ minHeight: '100vh', backgroundColor: '#b3e5fc' }}>
+      <Card className="shadow-lg" style={{ maxWidth: '500px', width: '100%' }}>
+        <Card.Body className="p-5">
+          <div className="text-center mb-4">
+            <img src={logoG42} alt="Logo G42" style={{ width: '150px' }} />
+          </div>
+          <h2 className="text-center mb-4">Eliminar Canción</h2>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>ID de la canción</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Ingresa el ID de la canción"
+                value={songId}
+                onChange={(e) => setSongId(e.target.value)}
+              />
+            </Form.Group>
+            {error && <Alert variant="danger">{error}</Alert>}
+            {success && <Alert variant="success">{success}</Alert>} {/* Mostrar mensaje de éxito */}
+            <div className="d-grid">
+              <Button variant="danger" onClick={handleDelete} size="lg">
+                Eliminar
+              </Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 
