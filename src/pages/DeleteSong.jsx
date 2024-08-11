@@ -23,7 +23,7 @@ const DeleteSong = () => {
 
     try {
       await deleteSong(songId, user.token);
-      navigate('/songs'); // Redirige a la lista de canciones o a donde prefieras
+      navigate('/'); // Redirige a la lista de canciones o a donde prefieras
     } catch (error) {
       console.error('Failed to delete song:', error);
       setError('No se pudo eliminar la canción. Intenta de nuevo más tarde.');
