@@ -33,3 +33,10 @@ const Home = () => {
 };
 
 export default Home;
+
+/*RESUMEN DEL FUNCIONAMIENTO DEL ARCHIVO
+Propósito: Mostrar la página de inicio que incluye un encabezado y la lista de canciones.
+Características:
+Contenedor con diseño centrado y padding.
+Título de página con estilo.
+Inclusión del componente SongList para mostrar las canciones. */
