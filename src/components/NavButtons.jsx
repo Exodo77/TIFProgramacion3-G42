@@ -14,7 +14,7 @@ const NavButtons = () => {
       <DropdownButton id="dropdown-basic-button" title="Menu" className="me-2">
         <Dropdown.Item as={Link} to="/songs/new">Agregar Canción</Dropdown.Item>
         <Dropdown.Item as={Link} to="/songs/delete">Eliminar Canción</Dropdown.Item>
-        <Dropdown.Item as={Link} to="/songs/edit/:id">Editar Canción</Dropdown.Item>
+        <Dropdown.Item as={Link} to="/songs/enter-id">Editar Canción</Dropdown.Item>
         <Dropdown.Item as={Link} to="/profile">Perfil</Dropdown.Item>
       </DropdownButton>
       <div>
