@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import logoG42 from '../../assets/logog42.png';
-import { Button, Form, Container, Card, Alert, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Form, Container, Card, Alert, Row, Col, Button } from 'react-bootstrap';
+import NavButtons from '../NavButtons';
 
 const AddSongForm = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [titulo, setTitulo] = useState('');
   const [año, setAño] = useState('');
   const [album, setAlbum] = useState('');
@@ -68,24 +68,7 @@ const AddSongForm = () => {
     <Container fluid className="d-flex flex-column py-5" style={{ minHeight: '100vh', backgroundColor: '#b3e5fc' }}>
       <Row className="w-100 mb-4">
         <Col className="d-flex justify-content-end align-items-center">
-          <Link to="/">
-            <Button variant="secondary" className="me-2">Home</Button>
-          </Link>
-          <DropdownButton id="dropdown-basic-button" title="Menu" className="me-2">
-            <Dropdown.Item as={Link} to="/songs/new">Agregar Canción</Dropdown.Item>
-            <Dropdown.Item as={Link} to="/songs/delete">Eliminar Canción</Dropdown.Item>
-            <Dropdown.Item as={Link} to="/songs/edit/:id">Editar Canción</Dropdown.Item>
-            <Dropdown.Item as={Link} to="/profile">Perfil</Dropdown.Item>
-          </DropdownButton>
-          <div>
-            {user ? (
-              <Button variant="danger" onClick={logout}>Logout</Button>
-            ) : (
-              <Link to="/login">
-                <Button variant="primary">Login</Button>
-              </Link>
-            )}
-          </div>
+          <NavButtons />
         </Col>
       </Row>
       <Row className="flex-grow-1 d-flex justify-content-center align-items-center">
