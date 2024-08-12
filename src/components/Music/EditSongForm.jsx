@@ -1,85 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// src/components/Music/EditSongForm.jsx
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import { Button, Form, Container, Card, Alert, Row, Col } from 'react-bootstrap';
 import logoG42 from '../../assets/logog42.png';
 import NavButtons from '../NavButtons';
+import { useAuth } from '../../context/AuthContext';
 
 const EditSongForm = () => {
   const { id } = useParams();
+  const { user } = useAuth();
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
   const [album, setAlbum] = useState('');
-  const [error, setError] = useState('');
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getSong = async () => {
+    const fetchSong = async () => {
       try {
-        const response = await axios.get(`https://sandbox.academiadevelopers.com/harmonyhub/songs/${id}`, {
-          headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`
-          }
+        const response = await axios.get(`https://sandbox.academiadevelopers.com/harmonyhub/songs/${id}/`, {
+          headers: { Authorization: `Token ${user.token}` },
         });
-        const songData = response.data;
-        setTitle(songData.title);
-        setYear(songData.year || '');
-        setAlbum(songData.album ? songData.album.toString() : '');
-      } catch (error) {
-        console.error('Error al obtener la canción:', error.response?.data || error.message);
-        setError('Error al cargar la canción. Intenta de nuevo más tarde.');
+        const song = response.data;
+        setTitle(song.title);
+        setYear(song.year);
+        setAlbum(song.album);
+      } catch (err) {
+        console.error('Error al obtener canción:', err.message);
+        setError('La canción no existe o no tienes permiso para editarla.');
       }
     };
 
-    getSong();
-  }, [id]);
+    fetchSong();
+  }, [id, user.token]);
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    let parsedAlbum = null;
-    if (album) {
-      parsedAlbum = parseInt(album, 10);
-      if (isNaN(parsedAlbum)) {
-        setError('El álbum debe ser un número válido.');
-        return;
-      }
-    }
-
-    if (!title.trim()) {
-      setError('El título es obligatorio.');
-      return;
-    }
-
-    let parsedYear = null;
-    if (year) {
-      parsedYear = parseInt(year, 10);
-      if (isNaN(parsedYear)) {
-        setError('El año debe ser un número válido.');
-        return;
-      }
-    }
-
-    const songData = {
-      title: title.trim(),
-      year: parsedYear,
-      album: parsedAlbum
-    };
-
     try {
-      await axios.put(`https://sandbox.academiadevelopers.com/harmonyhub/songs/${id}/`, songData, {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('year', year || '');
+      formData.append('album', album || '');
+      if (file) {
+        formData.append('song_file', file);
+      }
+
+      await axios.put(`https://sandbox.academiadevelopers.com/harmonyhub/songs/${id}/`, formData, {
         headers: {
-          'Authorization': `Token ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Token ${user.token}`,
+          'Content-Type': 'multipart/form-data',
+        },
       });
-      console.log('Song updated successfully');
-      navigate('/songs'); // Redirige a la lista de canciones tras actualizar
-    } catch (error) {
-      console.error('Error al actualizar la canción:', error.response?.data || error.message);
-      setError('Error al actualizar la canción. Verifica los datos y vuelve a intentarlo.');
+
+      navigate('/'); // Redirige a la lista de canciones después de la edición
+    } catch (err) {
+      console.error('Error al actualizar canción:', err.message);
+      setError('Error al actualizar la canción. Verifica los campos e inténtalo de nuevo.');
     }
   };
+
+  if (error) {
+    return <p style={{ color: 'red' }}>{error}</p>;
+  }
 
   return (
     <Container fluid className="d-flex flex-column py-5" style={{ minHeight: '100vh', backgroundColor: '#b3e5fc' }}>

@@ -9,6 +9,8 @@ import DeleteSong from './pages/DeleteSong';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import PrivateRoute from './components/Auth/PrivateRoute';
+import EnterSongId from './pages/EnterSongId';
+
 
 
 // Importa el componente AddAlbum
@@ -37,6 +39,7 @@ const App = () => {
             <Route path="/songs/new" element={<PrivateRoute element={<AddSong />} />} /> 
             <Route path="/songs/edit/:id" element={<PrivateRoute element={<EditSong />} />} />
             <Route path="/songs/delete" element={<PrivateRoute element={<DeleteSong />} />} />
+            <Route path="/songs/enter-id" element={<PrivateRoute element={<EnterSongId />} />} />
           </Routes>
         </ApiProvider>
       </AuthProvider>
