@@ -1,3 +1,5 @@
+// src/components/NavButtons.jsx
+
 import React from 'react';
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -16,6 +18,7 @@ const NavButtons = () => {
         <Dropdown.Item as={Link} to="/songs/delete">Eliminar Canción</Dropdown.Item>
         <Dropdown.Item as={Link} to="/songs/enter-id">Editar Canción</Dropdown.Item>
         <Dropdown.Item as={Link} to="/profile">Perfil</Dropdown.Item>
+        <Dropdown.Item as={Link} to="/my-songs">Mis Canciones</Dropdown.Item> {/* Nuevo enlace */}
       </DropdownButton>
       <div>
         {user ? (

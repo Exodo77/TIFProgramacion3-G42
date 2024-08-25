@@ -1,4 +1,3 @@
-// src/components/Music/EditSongForm.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -65,10 +64,6 @@ const EditSongForm = () => {
     }
   };
 
-  if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
-  }
-
   return (
     <Container fluid className="d-flex flex-column py-5" style={{ minHeight: '100vh', backgroundColor: '#b3e5fc' }}>
       <Row className="w-100 mb-4">
@@ -84,6 +79,7 @@ const EditSongForm = () => {
                 <img src={logoG42} alt="Logo G42" style={{ width: '150px' }} />
               </div>
               <h2 className="text-center mb-4">Editar Canción</h2>
+              {error && <Alert variant="danger">{error}</Alert>} {/* Alert para mostrar errores */}
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>Título de la canción</Form.Label>
@@ -116,7 +112,14 @@ const EditSongForm = () => {
                     placeholder="Opcional"
                   />
                 </Form.Group>
-                {error && <Alert variant="danger">{error}</Alert>}
+                <Form.Group className="mb-4">
+                  <Form.Label>Archivo de la canción</Form.Label>
+                  <Form.Control
+                    type="file"
+                    onChange={handleFileChange}
+                    accept="audio/*"
+                  />
+                </Form.Group>
                 <div className="d-grid">
                   <Button variant="primary" type="submit" size="lg">
                     Actualizar canción

@@ -12,7 +12,7 @@ const AddSongForm = () => {
   const [album, setAlbum] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [error, setError] = useState(null);
-  const [exito, setExito] = useState('');
+  const [exito, setExito] = useState(''); // Estado para manejar el mensaje de éxito
 
   const manejarCambioArchivo = (evento) => {
     setArchivo(evento.target.files[0]);
@@ -21,7 +21,7 @@ const AddSongForm = () => {
   const manejarEnvio = async (evento) => {
     evento.preventDefault();
     setError(null);
-    setExito('');
+    setExito(''); // Reinicia el mensaje de éxito al enviar
 
     if (!titulo) {
       setError('Se requiere un título.');
@@ -50,11 +50,12 @@ const AddSongForm = () => {
         },
       });
 
+      // Resetea los campos del formulario
       setTitulo('');
       setAño('');
       setAlbum('');
       setArchivo(null);
-      setExito('Canción añadida con éxito.');
+      setExito('Canción añadida con éxito.'); // Actualiza el mensaje de éxito
     } catch (error) {
       setError(error.response ? error.response.data.detail : 'Error al añadir la canción.');
       if (error.response && error.response.status === 401) {
@@ -126,7 +127,7 @@ const AddSongForm = () => {
                 </div>
               </Form>
               {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-              {exito && <Alert variant="success" className="mt-3">{exito}</Alert>}
+              {exito && <Alert variant="success" className="mt-3">{exito}</Alert>} {/* Alert de éxito */}
             </Card.Body>
           </Card>
         </Col>

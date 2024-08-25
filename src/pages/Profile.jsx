@@ -35,7 +35,7 @@ const Profile = () => {
             <Card.Body className="p-5 text-center">
               <img src={logoG42} alt="G42 Logo" className="mb-4" style={{ width: '150px' }} />
               <h2 className="mb-4">Perfil de Usuario</h2>
-              <p><strong>ID de usuario:</strong> {user.user_id || 'No disponible'}</p>
+              <p><strong>ID de usuario:</strong> {user.user__id || 'No disponible'}</p>
               <p><strong>Nombre de usuario:</strong> {user.username || 'No disponible'}</p>
               <p><strong>Nombre:</strong> {user.first_name || 'No disponible'}</p>
               <p><strong>Apellido:</strong> {user.last_name || 'No disponible'}</p>
